@@ -14,15 +14,24 @@
     align-items: center;
     justify-content: center;
  }
+ html {
+  scroll-behavior:smooth;
+}
+
  nav{
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    padding: 20px 8%;
+    padding: 0px 8%;
+    height:  9%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    color:inherit;
+    background: rgba(217, 215, 226, 0.85);
+    backdrop-filter: blur(3px);        /* subtle blur effect */
+    z-index: 1000;
  }
  
 
@@ -44,6 +53,7 @@ nav .logo{
 
 .content{
     text-align: center;
+    color: #fff;
 }
 
 .content h1{
@@ -56,6 +66,7 @@ nav .logo{
 .content h1:hover{
     -webkit-text-stroke: 2px #fff;
     color:transparent
+     
 }
 
 .content a {
@@ -89,4 +100,141 @@ nav .logo{
         width: auto;
         height:100%;
     }
+}
+
+
+
+/* ===== SECTIONS GENERAL ===== */
+section {
+  padding: 80px 10%;
+  text-align: center;
+  color: #fff;
+  background: #111111; /* dark theme background */
+}
+
+section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+section p {
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+/* ===== GRID LAYOUTS ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: rgba(255, 244, 244, 0.05);
+  padding: 25px;
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.card h3, .card h4 {
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+.card p a {
+  color: #ffffff;
+  text-decoration: underline; /* optional */
+  transition: color 0.3s ease;
+}
+
+
+/* ===== CONTACT FORM ===== */
+.contact form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact input,
+.contact textarea {
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.contact textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.contact button {
+  background: #ffffff;
+  color: #0c0333;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 15px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.contact button:hover {
+  background: #ffffff;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #ffffff;
+  color: #aaa;
+  text-align: center;
+  padding: 25px;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+/* ===== RESUME SECTION ===== */
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.resume-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 25px;
+  border-radius: 12px;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resume-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.resume-card h3 {
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.resume-card ul {
+  padding-left: 18px;
+}
+
+.resume-card ul li {
+  margin-bottom: 8px;
+  line-height: 1.5;
 }

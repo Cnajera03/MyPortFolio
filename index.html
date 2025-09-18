@@ -3,34 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
   <title>MyPortfolio</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Google Fonts Example -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="hero">
+ 
 
-    <!-- Background video -->
+  <!-- Hero Section -->
+  <header class="hero" id="Home">
     <video autoplay loop muted playsinline class="back-video">
       <source src="Images/downtown.mp4" type="video/mp4">
     </video>
 
-    <!-- Navigation -->
     <nav>
-      <img src="Images/image1.png" class="logo">
-      <ul> 
-        <li><a href="#">HOME</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Info</a></li>
-        <li><a href="#">Credentials</a></li>
+      <img src="Images/image1.png" class="logo" alt="Logo">
+      <ul>
+        <li><a href="#Home">Home</a></li>
+        <li><a href="#About">About</a></li>
+        <li><a href="#Projects">Projects</a></li>
+        <li><a href="#Contact">Contact</a></li>
       </ul>
     </nav>
 
-    <!-- Content -->
     <div class="content">
-      <h1>MyPortfolio</h1>
-      <a href="#">Explore</a>
+      <h1>My Portfolio</h1>
+      <p>Creative solutions through design & development</p>
+      <a href="Projects.html" class="cta">View My Work</a>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section id="About" class="section">
+    <h2>About Me</h2>
+    <p>
+      Hi, I’m Carlos. I’m passionate about building modern, user-friendly websites
+      and applications. My focus is on combining design and functionality to create
+      meaningful digital experiences.
+    </p>
+  </section>
+ 
+  <!-- Resume Section -->
+<section id="Resume" class="section">
+  <h2>Resume</h2>
+
+  <div class="resume-grid">
+    <!-- Education -->
+    <div class="resume-card">
+      <h3>Education</h3>
+      <ul>
+        <li><strong>wake technical<br>Community College</strong> — AAS</li>
+        <li>Currently completing courses in Computer Science & Data Analytics</li>
+        <li>Awarded Wake Tech Foundation Scholarship</li>
+        <li>Dean's List (Spring 2024)</li>
+        <li><strong>Needham Broughton High School</strong>, Raleigh, NC</li>
+        <li>Honor Roll (2019–2022) | GPA: 4.0</li>
+      </ul>
     </div>
 
+    <!-- Skills -->
+    <div class="resume-card">
+      <h3>Technical Skills</h3>
+      <ul>
+        <li>SAS Programming</li>
+        <li>Oracle SQL</li>
+        <li>Tableau</li>
+        <li>Excel</li>
+        <li>Marketing Analytics Certificate</li>
+        <li>Business Intelligence Certificate</li>
+      </ul>
+    </div>
+
+    <!-- Languages -->
+    <div class="resume-card">
+      <h3>Languages</h3>
+      <ul>
+        <li>English — Native / Bilingual</li>
+        <li>Spanish — Native / Bilingual</li>
+      </ul>
+    </div>
+
+    <!-- Summary -->
+    <div class="resume-card">
+      <h3>Professional Summary</h3>
+      <p>
+        Hardworking and passionate job seeker with strong organizational skills,
+        eager to secure an entry-level or internship position. Willing to work for free
+        to gain hands-on or remote experience.
+      </p>
+    </div>
   </div>
+</section>
+
+
+  <!-- Projects Preview Section -->
+  <section id="Projects" class="section">
+    <h2>Featured Projects</h2>
+    <div class="grid">
+      <div class="card">
+        <h4>Project One</h4>
+        <p>Short description of your project. <a href="Projects.html">See more →</a></p>
+      </div>
+      <div class="card">
+        <h4>Project Two</h4>
+        <p>Short description of your project. <a href="Projects.html">See more →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="Contact" class="section contact">
+  <h2>Contact Me</h2>
+  <p>Let's collaborate! Reach out via the form below.</p>
+ <form action="https://formspree.io/f/mzzanzvj"method="POST">
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="email" name="email" placeholder="Your Email" required>
+  <textarea name="message" placeholder="Your Message" required></textarea>
+  <button type="submit" class="cta">Send Message</button>
+</form>
+
+</section>
+
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 MyPortfolio | Designed by CarlosN.</p>
+  </footer>
 </body>
 </html>
+
+
+ 
