@@ -1,8 +1,10 @@
 /* ===== ANALYTICS IMAGES ===== */
 .analysis-img {
-    width: 100%;
+    width: 90%;               /* smaller */
+    max-width: 1000px;         /* prevents huge images */
+    display: block;
+    margin: 10px auto;        /* centers images */
     border-radius: 10px;
-    margin-top: 10px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -10,3 +12,4 @@
     transform: scale(1.03);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
+
