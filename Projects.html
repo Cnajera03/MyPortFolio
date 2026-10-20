@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Forecasting &amp; Analytics | Data Science Portfolio</title>
+    <link rel="stylesheet" href="projects.css">
+</head>
+<body>
+
+<!-- ANALYTICS SECTION -->
+<section id="analytics">
+    <h2>Sales Forecasting &amp; Analytics</h2>
+    <p class="lead">
+        End-to-end revenue forecasting for an e-commerce business: SQL extraction from BigQuery,
+        exploratory analysis, stationarity testing, SARIMA model selection, backtesting against
+        baselines, residual diagnostics, and a 12-month forecast with 95% prediction intervals.
+    </p>
+
+    <!-- KEY NUMBERS -->
+    <div class="kpis">
+        <div class="kpi"><div class="num">$7.6M</div><div class="lbl">Total revenue analyzed (May 2019 – Sep 2026)</div></div>
+        <div class="kpi"><div class="num">+72.3%</div><div class="lbl">Trailing 12-month growth YoY ($2.88M)</div></div>
+        <div class="kpi"><div class="num">$1.21M</div><div class="lbl">Forecast revenue, Q4 2026</div></div>
+        <div class="kpi"><div class="num">7.0%</div><div class="lbl">Mean rolling-backtest MAPE</div></div>
+    </div>
+
+    <!-- 1. EXPLORE -->
+    <h3 class="sub-title">1. Data &amp; Exploration</h3>
+    <div class="grid">
+        <div class="card">
+            <h3>Monthly Revenue &amp; Average Order Value</h3>
+            <p>Orders pulled with SQL from the thelook_ecommerce public dataset (cancelled and returned orders excluded). Launch-period months below 5% of median revenue were trimmed, leaving 89 months.</p>
+            <img src="Images/revenue_and_aov.png" class="analysis-img" alt="Monthly revenue with 3-month average and average order value over time">
+        </div>
+
+        <div class="card">
+            <h3>Trend, Seasonality &amp; Residuals</h3>
+            <p>Multiplicative decomposition shows a clear seasonal pattern: May is the strongest month (1.09x typical) and February the weakest (0.92x). That rules out plain ARIMA and motivates SARIMA.</p>
+            <img src="Images/seasonal_decomposition.png" class="analysis-img" alt="Seasonal decomposition of monthly revenue into trend, seasonal and residual components">
+        </div>
+    </div>
+
+    <!-- 2. MODEL -->
+    <h3 class="sub-title">2. Modeling &amp; Validation</h3>
+    <div class="grid">
+        <div class="card">
+            <h3>Stationarity Testing</h3>
+            <p>Log-transformed revenue is non-stationary (ADF p = 0.37). One regular difference fixes it (p &lt; 0.001), while seasonal differencing was inconclusive (p = 0.77), so both options were compared on out-of-sample error rather than AIC.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Series</th><th>ADF stat</th><th>p-value</th><th>Result</th></tr></thead>
+                    <tbody>
+                        <tr><td>log revenue</td><td>-1.82</td><td>0.371</td><td>Non-stationary</td></tr>
+                        <tr><td>log revenue, d=1</td><td>-10.50</td><td>&lt; 0.001</td><td>Stationary</td></tr>
+                        <tr><td>d=1 + seasonal D=1</td><td>-0.97</td><td>0.765</td><td>Non-stationary</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Model Comparison (12-Month Holdout)</h3>
+            <p>A forecast only matters if it beats simple alternatives. The tuned SARIMA cut error by roughly 4x versus the naive baselines.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>MAPE %</th></tr></thead>
+                    <tbody>
+                        <tr class="best"><td>SARIMA (tuned)</td><td>18,039</td><td>32,156</td><td>6.01</td></tr>
+                        <tr><td>SARIMA (D=1 check)</td><td>31,655</td><td>43,765</td><td>11.50</td></tr>
+                        <tr><td>Holt-Winters</td><td>43,429</td><td>57,054</td><td>16.03</td></tr>
+                        <tr><td>Naive</td><td>70,114</td><td>88,811</td><td>25.99</td></tr>
+                        <tr><td>ARIMA(1,1,1)</td><td>71,505</td><td>89,896</td><td>26.60</td></tr>
+                        <tr><td>Seasonal naive</td><td>100,827</td><td>107,702</td><td>40.86</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Rolling-Origin Backtest</h3>
+            <p>Three candidate specifications were tested across five 6-month forecast windows. SARIMA(2,1,2)(0,1,1,12) had the lowest average error and was selected as the final model.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Model</th><th>Mar 24</th><th>Sep 24</th><th>Mar 25</th><th>Sep 25</th><th>Mar 26</th><th>Avg</th></tr></thead>
+                    <tbody>
+                        <tr class="best"><td>SARIMA (2,1,2)(0,1,1,12)</td><td>8.8</td><td>3.3</td><td>11.6</td><td>2.2</td><td>9.2</td><td>7.0</td></tr>
+                        <tr><td>SARIMA (1,1,2)(1,1,1,12)</td><td>8.0</td><td>4.4</td><td>3.8</td><td>7.0</td><td>12.8</td><td>7.2</td></tr>
+                        <tr><td>ARIMA (1,1,2)</td><td>9.2</td><td>4.5</td><td>6.2</td><td>11.1</td><td>11.3</td><td>8.5</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="margin-top:10px;">MAPE % by forecast origin.</p>
+        </div>
+
+        <div class="card">
+            <h3>Backtest: Last 12 Months</h3>
+            <p>Actual revenue versus the model forecast and a seasonal-naive baseline, with a 95% prediction interval.</p>
+            <img src="Images/backtest_last12.png" class="analysis-img" alt="Backtest of SARIMA forecast versus actual revenue and seasonal naive baseline">
+        </div>
+
+        <div class="card wide">
+            <h3>Residual Diagnostics</h3>
+            <p>Ljung-Box test at lag 12 returned p = 0.137, so no significant autocorrelation remains in the residuals.</p>
+            <img src="Images/residual_diagnostics.png" class="analysis-img" alt="Residual diagnostics: standardized residuals, histogram, Q-Q plot and correlogram">
+        </div>
+    </div>
+
+    <!-- 3. FORECAST -->
+    <h3 class="sub-title">3. Forecast</h3>
+    <div class="grid">
+        <div class="card wide">
+            <h3>12-Month Revenue Forecast (Oct 2026 – Sep 2027)</h3>
+            <p>Model refit on all available data. Projected revenue is about $5.9M over the next 12 months if recent growth persists, and the interval widens substantially by month 12, so near-term months are the most reliable.</p>
+            <img src="Images/forecast_12m.png" class="analysis-img" alt="Historical revenue with 12-month SARIMA forecast and 95% prediction interval">
+        </div>
+    </div>
+
+    <!-- 4. CATEGORIES -->
+    <h3 class="sub-title">4. Where the Revenue Comes From</h3>
+    <div class="grid">
+        <div class="card">
+            <h3>Top 10 Categories by Revenue</h3>
+            <p>Revenue is concentrated: Outerwear &amp; Coats and Jeans together make up about a quarter of total revenue, and the top 10 categories account for roughly 73%.</p>
+            <img src="Images/top_categories.png" class="analysis-img" alt="Horizontal bar chart of top 10 product categories by revenue">
+        </div>
+
+        <div class="card">
+            <h3>Volume vs. Value</h3>
+            <p>Outerwear wins on price, Jeans on volume. Several categories sell 8,000–9,000 units but earn under $60 each, so they bring volume rather than revenue.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Category</th><th>Revenue</th><th>Units</th><th>Avg price</th><th>Share</th></tr></thead>
+                    <tbody>
+                        <tr><td>Outerwear &amp; Coats</td><td>$996,036</td><td>6,858</td><td>$145.24</td><td>13.1%</td></tr>
+                        <tr><td>Jeans</td><td>$933,049</td><td>9,450</td><td>$98.74</td><td>12.3%</td></tr>
+                        <tr><td>Sweaters</td><td>$633,475</td><td>8,438</td><td>$75.07</td><td>8.3%</td></tr>
+                        <tr><td>Suits &amp; Sport Coats</td><td>$489,947</td><td>3,905</td><td>$125.47</td><td>6.4%</td></tr>
+                        <tr><td>Swim</td><td>$485,846</td><td>8,582</td><td>$56.61</td><td>6.4%</td></tr>
+                        <tr><td>Fashion Hoodies &amp; Sweatshirts</td><td>$483,097</td><td>8,967</td><td>$53.87</td><td>6.4%</td></tr>
+                        <tr><td>Sleep &amp; Lounge</td><td>$413,626</td><td>8,434</td><td>$49.04</td><td>5.4%</td></tr>
+                        <tr><td>Shorts</td><td>$376,700</td><td>8,244</td><td>$45.69</td><td>5.0%</td></tr>
+                        <tr><td>Tops &amp; Tees</td><td>$372,361</td><td>8,984</td><td>$41.45</td><td>4.9%</td></tr>
+                        <tr><td>Dresses</td><td>$352,148</td><td>4,186</td><td>$84.13</td><td>4.6%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIMITATIONS -->
+    <div class="callout">
+        <strong>Limitations.</strong> The data is synthetic and excludes promotions, so these figures illustrate
+        the method rather than predict a real business. The 95% prediction intervals covered only 75% of
+        actual holdout values, so uncertainty estimates need further calibration.
+    </div>
+
+    <p class="lead" style="margin-top:20px;"><strong>Tools &amp; techniques:</strong> Python, SQL (BigQuery), pandas, statsmodels, scikit-learn, SARIMA, Holt-Winters, rolling-origin backtesting, MAPE/RMSE evaluation, matplotlib.</p>
+
+    <div class="links">
+        <a class="btn alt" href="E_Commerce (1).ipynb">Open notebook</a>
+    </div>
+</section>
+
+</body>
+</html>
